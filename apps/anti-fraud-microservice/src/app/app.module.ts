@@ -9,7 +9,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        PORT: Joi.number().required(),
         KAFKA_BROKER_URL: Joi.string().required(),
       }),
     }),
@@ -24,6 +23,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
               clientId: 'transaction',
               brokers: [configService.getOrThrow('KAFKA_BROKER_URL')],
             },
+            producerOnlyMode: true,
             consumer: {
               groupId: 'transaction-consumer',
             },
@@ -36,10 +36,4 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  static port: number | string;
-
-  constructor(private readonly _configService: ConfigService) {
-    AppModule.port = this._configService.get('PORT');
-  }
-}
+export class AppModule {}

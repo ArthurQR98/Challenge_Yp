@@ -1,0 +1,12 @@
+model Transaction {
+    transactionExternalId   String    @id @default(uuid())
+    accountExternalIdDebit  String
+    accountExternalIdCredit String
+    value                   Int
+    transactionStatus       Status    @relation(fields: [statusId], references: [id])
+    statusId                Int       @default(1)
+    transactionType         Type      @relation(fields: [typeId], references: [id])
+    typeId                  Int
+    createdAt               DateTime  @default(now())
+    updatedAt               DateTime? @updatedAt
+}
